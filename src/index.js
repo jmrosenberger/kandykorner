@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import KandyKorner from 'KandyKorner.js';
+import { KandyKorner } from './components/KandyKorner.js';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
