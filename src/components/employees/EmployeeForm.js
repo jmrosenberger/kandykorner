@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom";
+import "./Employee.css"
 
 
 
@@ -107,20 +108,22 @@ export const EmployeeForm = () => {
                     </select>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="managerBoolean">Manager:</label>
+                    <label htmlFor="managerBoolean">Manager:  </label>
                     <input
                         onChange={
                             (event) => {
                                 const copy = {...employee}
-                                copy.manager = event.target.value
+                                copy.manager = event.target.checked
                                 updateEmployee(copy)
                             }
                         }
                         required autoFocus
-                        type="text"
+                        checked={employee.manager}
+                        value="hi"
+                        type="checkbox"
                         className="form-control"
-                        placeholder="Is this employee a manager?"
                          />
+                   
                 </div>
                 <div className="form-group">
                     <label htmlFor="fullTimeSelection">Full-Time:</label>
@@ -128,11 +131,13 @@ export const EmployeeForm = () => {
                         onChange={
                             (event) => {
                                 const copy = {...employee}
-                                copy.fullTime = event.target.value
+                                copy.fullTime = event.target.checked
                                 updateEmployee(copy)
                             }
                         }
                         required autoFocus
+                        checked={employee.fullTime}
+                        value="hello"
                         type="checkbox"
                         className="form-control"
                          />
