@@ -3,8 +3,6 @@ import { useHistory } from "react-router-dom";
 import "./Employee.css"
 
 
-
-
 export const EmployeeForm = () => {
 
     const [locations, selectLocation] = useState([])
@@ -12,10 +10,10 @@ export const EmployeeForm = () => {
     useEffect(
         () => {
             fetch("http://localhost:3749/locations")
-            .then(res => res.json())
-            .then((data) => {
-                selectLocation(data)
-            })
+                .then(res => res.json())
+                .then((data) => {
+                    selectLocation(data)
+                })
         },
         []
     )
@@ -23,28 +21,27 @@ export const EmployeeForm = () => {
     const [employee, updateEmployee] = useState({
         name: "",
         locationId: "",
-        manager: false,
-        fullTime: false,
+        address: "",
+        email: "",
+        cellNumber: "",
+        manager: Boolean,
+        fullTime: Boolean,
         hourlyRate: null
     });
-    
-    const history = useHistory()
-    
 
-    // const updateOrderState = (propToModify, newValue) => {
-    //     const newObject = {...chosenOptions}
-    //     newObject[propToModify] = newValue
-    //     updateOptions(newObject)
-    // }
-    
+    const history = useHistory()
+
 
     const hireEmployee = (event) => {
         event.preventDefault()
         const newEmployee = {
             name: employee.name,
+            address: employee.address,
+            email: employee.email,
+            cellNumber: employee.cellNumber,
             locationId: employee.locationId,
-            manager: false,
-            fullTime: false,
+            manager: employee.manager,
+            fullTime: employee.fullTime,
             hourlyRate: employee.hourlyRate,
             dateHired: Date()
         }
@@ -57,62 +54,111 @@ export const EmployeeForm = () => {
         }
 
         return fetch("http://localhost:3749/employees?_expand=location", fetchOption)
-        .then(() => {
-            history.push("/employees")
-        })
-        
+            .then(() => {
+                history.push("/employees")
+            })
+
     }
 
-    // debugger  
     return (
         <form className="hireForm">
             <h2 className="hireForm__title">New Employee</h2>
             <fieldset>
-                <div className="form-group">
+                <div className="form__group">
                     <label htmlFor="name">Name:</label>
                     <input
                         onChange={
                             (event) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.name = event.target.value
                                 updateEmployee(copy)
                             }
                         }
                         required autoFocus
                         type="text"
-                        className="form-control"
+                        className="form__control"
                         placeholder="Full name"
-                         />
+                    />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="location">Location:</label>
-                    <select 
-                    onChange={
-                        (event) => {
-                            const copy = {...employee}
-                            copy.locationId = parseInt(event.target.value)
-                            updateEmployee(copy) 
-                        }
-                    }
-                    required autoFocus
-                    >
-                    <option value="">Choose Location</option>
-                
-                    {
-                        locations.map(
-                            (location) => {
-                                return <option key={location.id} value={location.id}>{location.name}</option>
+                <div className="form__group">
+                    <label htmlFor="address">Address:</label>
+                    <input
+                        onChange={
+                            (event) => {
+                                const copy = { ...employee }
+                                copy.address = event.target.value
+                                updateEmployee(copy)
                             }
-                        )
-                    }
+                        }
+                        required autoFocus
+                        type="text"
+                        className="form__control"
+                        placeholder="Home Address"
+                    />
+                </div>
+                <div className="form__group">
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        onChange={
+                            (event) => {
+                                const copy = { ...employee }
+                                copy.email = event.target.value
+                                updateEmployee(copy)
+                            }
+                        }
+                        required autoFocus
+                        type="text"
+                        className="form__control"
+                        placeholder="Email Address"
+                        
+                    />
+                </div>
+                <div className="form__group">
+                    <label htmlFor="phone">Contact Phone#:</label>
+                    <input
+                        onChange={
+                            (event) => {
+                                const copy = { ...employee }
+                                copy.cellNumber = event.target.value
+                                updateEmployee(copy)
+                            }
+                        }
+                        max="10"
+                        required autoFocus
+                        type="number"
+                        className="form__control"
+                        placeholder="--- --- ----"
+                    />
+                </div>
+                <div className="form__group">
+                    <label htmlFor="location">Location:</label>
+                    <select
+                        onChange={
+                            (event) => {
+                                const copy = { ...employee }
+                                copy.locationId = parseInt(event.target.value)
+                                updateEmployee(copy)
+                            }
+                        }
+                        required autoFocus
+                    >
+                        <option value="">Choose Location</option>
+
+                        {
+                            locations.map(
+                                (location) => {
+                                    return <option key={location.id} value={location.id}>{location.name}</option>
+                                }
+                            )
+                        }
                     </select>
                 </div>
-                <div className="form-group">
+                <div className="form__group manager__boolean">
                     <label htmlFor="managerBoolean">Manager:  </label>
                     <input
                         onChange={
                             (event) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.manager = event.target.checked
                                 updateEmployee(copy)
                             }
@@ -121,16 +167,16 @@ export const EmployeeForm = () => {
                         checked={employee.manager}
                         value="hi"
                         type="checkbox"
-                        className="form-control"
-                         />
-                   
+                        className="form__control"
+                    />
+
                 </div>
-                <div className="form-group">
+                <div className="form__group">
                     <label htmlFor="fullTimeSelection">Full-Time:</label>
                     <input
                         onChange={
                             (event) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.fullTime = event.target.checked
                                 updateEmployee(copy)
                             }
@@ -139,31 +185,31 @@ export const EmployeeForm = () => {
                         checked={employee.fullTime}
                         value="hello"
                         type="checkbox"
-                        className="form-control"
-                         />
+                        className="form__control"
+                    />
                 </div>
-                <div className="form-group">
+                <div className="form__group">
                     <label htmlFor="payRate">Hourly Rate:</label>
                     <input
                         onChange={
                             (event) => {
-                                const copy = {...employee}
+                                const copy = { ...employee }
                                 copy.hourlyRate = event.target.value
                                 updateEmployee(copy)
                             }
                         }
                         required autoFocus
                         type="text"
-                        className="form-control"
+                        className="form__control"
                         placeholder="Hourly Rate"
-                         />
+                    />
                 </div>
             </fieldset>
-            
+
             <button className="btn btn-primary" onClick={hireEmployee}>
                 Finish Hiring
             </button>
         </form>
-        
+
     )
 }
