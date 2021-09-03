@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
+import { getAllEmployees } from "../ApiManager"
+import "./Employee.css"
 
 export const EmployeeList = () => {
     const [employees, changeEmployee] = useState([])
@@ -9,8 +11,7 @@ export const EmployeeList = () => {
 
     useEffect(
         () => {
-            fetch("http://localhost:3749/employees?_expand=location")
-                .then(res => res.json())
+            getAllEmployees()
                 .then((data) => {
                     changeEmployee(data)
                 })
@@ -20,25 +21,47 @@ export const EmployeeList = () => {
 
     useEffect(() => {
         const employeeLocations = employees.map(employee => employee.location.name)
-             setLocation(employeeLocations.join(", "))
-            
-        }, [employees])
+        setLocation(employeeLocations.join(", "))
+
+    }, [employees])
+
+
+    const terminateEmployee = (id) => {
+        fetch(`http://localhost:3749/employees/${id}`, {
+            method: "DELETE"
+        })
+            .then(() => {
+                getAllEmployees()
+                    .then((employees) => {
+                        changeEmployee(employees)
+                    })
+            })
+    }
 
 
     return (
         <>
             <div>
-        <button onClick={() => history.push("/employees/create")}>Hire Employee</button>
+                <button className="hireButton" onClick={() => history.push("/employees/create")}>Hire Employee</button>
 
-        </div>
-            <div><u><b>
-                Employees:</b></u> { employees.location }
-                
+            </div>
+            <div className="heading"><u><b>
+                Employees:</b></u>
+
             </div>
             {
                 employees.map(
                     (employee) => {
-                        return <p key={`employee--${employee.id}`}>{employee.name} - {employee.location.name}</p>
+                        return <div key={employee.id} className="employee employee__list">
+                            <p key={`employee--${employee.id}`}>
+                               <Link to={`/employees/${employee.id}`}> {employee.name} - {employee.location.name}</Link>
+                                <button key={employee.id} className="employee employee__terminate"
+                                    onClick={() => {
+                                        terminateEmployee(employee.id)
+                                    }}> 🔫 Terminate Employee
+                                </button>
+                            </p>
+                        </div>
                     }
                 )
             }

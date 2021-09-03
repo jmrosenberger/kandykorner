@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
+import { getAllOrders } from "../ApiManager"
 
 export const CustomerList = () => {
     const [customers, setCustomer] = useState([])
@@ -9,8 +10,7 @@ export const CustomerList = () => {
 
     useEffect(
         () => {
-            fetch("http://localhost:3749/customers")
-                .then(res => res.json())
+            getAllOrders()
                 .then((data) => {
                     setCustomer(data)
                 })

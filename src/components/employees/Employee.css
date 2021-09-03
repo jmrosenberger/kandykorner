@@ -1,4 +1,34 @@
-div, p {
-    
+
+.hireForm {
+    /* border: 2px solid blue; */
+    margin: .5rem;
+}
+.employee {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: left;
+    margin: .5rem;
+}
+
+.employee {
+    display: flex;
+    flex-direction: column;
+}
+
+.employee__terminate {
+    margin-top: .5rem;
+}
+
+.form__group {
+    margin: 1rem;
+}
+
+.hireButton {
+    margin: 2rem .5rem;
+}
+
+.heading {
     margin: 1rem;
 }
