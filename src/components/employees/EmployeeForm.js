@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom";
+import { getAllLocations } from "../ApiManager";
 import "./Employee.css"
 
 
@@ -9,8 +10,7 @@ export const EmployeeForm = () => {
 
     useEffect(
         () => {
-            fetch("http://localhost:3749/locations")
-                .then(res => res.json())
+            getAllLocations()
                 .then((data) => {
                     selectLocation(data)
                 })
@@ -164,7 +164,7 @@ export const EmployeeForm = () => {
                             }
                         }
                         required autoFocus
-                        checked={employee.manager}
+                        
                         value="hi"
                         type="checkbox"
                         className="form__control"
@@ -182,7 +182,7 @@ export const EmployeeForm = () => {
                             }
                         }
                         required autoFocus
-                        checked={employee.fullTime}
+                        
                         value="hello"
                         type="checkbox"
                         className="form__control"

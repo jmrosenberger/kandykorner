@@ -1,84 +1,44 @@
+import React, { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+
 
 
 
 export const Employee = () => {
 
+    const [employee, updateEmployeeDetails] = useState([])
 
-    import React, { useEffect, useState } from "react"
-import { useParams, useHistory } from "react-router-dom"
-
-export const Ticket = () => {
-    const [ticket, assignTicket] = useState({})  // State variable for current ticket object
-    const [employees, syncEmployees] = useState([])  // State variable for array of employees
-    const { ticketId } = useParams()  // Variable storing the route parameter
-    const history = useHistory()
+    const { employeeId } = useParams()
 
 
-    // Fetch the individual ticket when the parameter value changes
     useEffect(
         () => {
-            return fetch(`http://localhost:8088/serviceTickets/${ticketId}?_expand=customer&_expand=employee`)
-                .then(response => response.json())
-                .then((data) => {
-                    assignTicket(data)
-                })
-
-        },
-        [ ticketId ]  // Above function runs when the value of ticketId change
-    )
-
-    // Fetch all employees
-    useEffect(
-        () => {
-            fetch(`http://localhost:8088/employees`)
-                .then(res => res.json())
-                .then(syncEmployees)
-        },
-        []  // Empty dependency array only reacts to JSX initial rendering
-    )
-
-    // Function to invoke when an employee is chosen from <select> element
-    const assignEmployee = (evt) => {
-
-        // Construct a new object to replace the existing one in the API
-        const updateTicket = {
-            customerId: ticket.customerId,
-            employeeId: parseInt(evt.target.value),
-            description: ticket.description,
-            emergency: ticket.emergency,
-            dateCompleted: ticket.dateCompleted
-        }
-
-        // Perform the PUT HTTP request to replace the resource
-        fetch(`http://localhost:8088/serviceTickets/${ticketId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(updateTicket)
-        })
-            .then(() => {
-                history.push("/serviceTickets")
+            return fetch(`http://localhost:3749/employees/${employeeId}?_expand=location`)
+            .then(response => response.json())
+            .then((data) => {
+                updateEmployeeDetails(data)
             })
-    }
+        },
+        [employeeId]
+    )
+
 
     return (
         <>
-            <section className="ticket">
-                <h3 className="ticket__description">{ticket.description}</h3>
-                <div className="ticket__customer">Submitted by {ticket.customer?.name}</div>
-                <div className="ticket__employee">Assigned to
-                    <select id="employee"
-                        value={ ticket.employeeId }
-                        onChange={ assignEmployee }>
-                        {
-                            employees.map(e => <option key={`employee--${e.id}`} value={e.id}>{e.name}</option>)
-                        }
-                    </select>
-                </div>
-            </section>
+            <div className="employee__details">
+                <h3 className="employee__heading">Employee Details</h3>
+                        <div className="employee__name details"><b>Name</b>: {employee.name}</div>
+                        <div className="employee__address details"><b>Address</b>: {employee.address}</div>
+                        <div className="employee__email details"><b>Email</b>: {employee.email}</div>
+                        <div className="employee__cellNumber details"><b>Contact#</b>: {employee.cellNumber}</div>
+                        <div className="employee__locationName details"><b>Location</b>: {employee.locationId}</div>
+                        <div className="employee__manager details"><b>Manager?</b>: {employee.manager}</div>
+                        <div className="employee__fullTime details"><b>Full-Time?</b>: {employee.fullTime}</div>
+                        <div className="employee__hourlyRate details"><b>Hourly Rate</b>: {employee.hourlyRate}</div>
+                        <div className="employee__dateHired details"><b>Date Hired</b>: {employee.dateHired}</div>
+                
+            </div>
         </>
     )
 }
 
-}

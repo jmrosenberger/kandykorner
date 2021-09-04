@@ -25,6 +25,6 @@ export const getAllLocations = () => {
 }
 
 export const getAllPurchases = () => {
-    return fetch ("http://localhost:3749/purchases")
+    return fetch ("http://localhost:3749/purchases?_expand=customer&_expand=order")
     .then(response => response.json())
 }
