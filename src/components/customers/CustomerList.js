@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { getAllOrders } from "../ApiManager"
+import { getAllCustomers } from "../ApiManager"
 
 export const CustomerList = () => {
     const [customers, setCustomer] = useState([])
-    // const [employeeLocations, setLocation] = useState("")
 
     const history = useHistory()
 
     useEffect(
         () => {
-            getAllOrders()
+            getAllCustomers()
                 .then((data) => {
                     setCustomer(data)
                 })
@@ -18,19 +17,10 @@ export const CustomerList = () => {
         []
     )
 
-    // useEffect(() => {
-    //     const employeeLocations = employees.map(employee => employee.location.name)
-    //          setLocation(employeeLocations.join(", "))
-            
-    //     }, [employees])
-
-
     return (
-        <>
-            
+        <>       
             <div><u><b>
-                Customers:</b></u> 
-                
+                Customers:</b></u>            
             </div>
             {
                 customers.map(
